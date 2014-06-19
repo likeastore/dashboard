@@ -20,6 +20,10 @@ angular.module('dashboardApp').directive('report', function (analytics) {
 				$scope.registered = data;
 			});
 
+			analytics.report(attrs.report, dates[attrs.date], 'user-verified', function (data) {
+				$scope.verified = data;
+			});
+
 			analytics.report(attrs.report, dates[attrs.date], 'user-logged-on', function (data) {
 				$scope.loggedOn = data;
 			});
