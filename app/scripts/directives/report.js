@@ -21,7 +21,7 @@ angular.module('dashboardApp').directive('report', function (analytics) {
 				for(var i = 0; i < names.length; i++) {
 					var name = names[i];
 					analytics.report(attrs.report, dates[attrs.date], name, function (data) {
-						$scope.events.push({key: name, value: data});
+						$scope.events.push({key: data.id, value: data});
 					});
 				}
 			});
