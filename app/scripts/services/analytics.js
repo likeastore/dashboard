@@ -8,6 +8,10 @@ angular.module('dashboardApp').factory('analytics', function ($http, config) {
 		report: function (report, date, id, callback) {
 			var query = url + '/api/reports/' + report + '/' + app + '?id=' + id + '&date=' + date.format('YYYY-MM-DD');
 			return $http({method: 'GET', url: query}).success(callback);
+		},
+		eventnames: function (callback) {
+			var query = url + '/api/eventnames/' + app;
+			return $http({method: 'GET', url: query}).success(callback);
 		}
 	};
 });
