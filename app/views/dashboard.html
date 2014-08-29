@@ -1,4 +1,22 @@
 <div class="reports">
+	<div class="filter">
+		<button class="pure-button" ng-model="isShow" ng-click="isShow=!isShow">
+			<i class="fa fa-filter"></i>
+			Filter Events
+		</button>
+		<div ng-show="isShow">
+			<form class="pure-form" ng-submit="apply()">
+			    <label for="option-one-{{event.key}}" class="pure-checkbox" ng-repeat="event in filtredEvents">
+			        <input id="option-one-{{event.key}}" type="checkbox" ng-model="event.value">
+			        {{event.key}}
+			    </label>
+			    <div class="pure-button" ng-click="checkAll()">
+					All
+				</div>
+			    <input type="submit" class="pure-button  pure-button-primary" value="Apply">
+		    </form>
+		</div>
+	</div>
 	<report data-period-heading="Today" data-report="day" data-date="today"></report>
 	<report data-period-heading="Yesterday" data-report="day" data-date="yesterday"></report>
 	<report data-period-heading="Week" data-report="week" data-date="today"></report>

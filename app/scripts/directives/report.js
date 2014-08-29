@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboardApp').directive('report', function (analytics) {
+angular.module('dashboardApp').directive('report', function (analytics, filterEvents) {
 	var dates = {
 		today: moment(),
 		yesterday: moment().subtract('days', 1),
@@ -15,16 +15,30 @@ angular.module('dashboardApp').directive('report', function (analytics) {
 		link: function ($scope, elem, attrs) {
 			$scope.heading = attrs.periodHeading;
 			$scope.datePeriod = dates[attrs.date].format('DD/MM/YYYY');
-			$scope.events = [];
 
-			analytics.eventnames(function(names) {
-				for(var i = 0; i < names.length; i++) {
-					var name = names[i];
+			function updateEvents() {
+				$scope.events = [];
+				var neededEvents = filterEvents.getEvents();
+				if(neededEvents) {
+					getData(neededEvents);
+				} else {
+					analytics.events(function(events) {
+						getData(events);
+					});
+				}
+			}
+
+			function getData(events) {
+				for(var i = 0; i < events.length; i++) {
+					var name = events[i];
 					analytics.report(attrs.report, dates[attrs.date], name, function (data) {
 						$scope.events.push({key: data.id, value: data});
 					});
 				}
-			});
+			}
+
+			updateEvents();
+			$scope.$on('eventsUpdated', updateEvents);
 		}
 	};
 });
