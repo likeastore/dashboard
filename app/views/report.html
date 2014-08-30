@@ -5,68 +5,9 @@
 		</div>
 	</div>
 	<div class="pure-g-r">
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{registered.total}}</span>
-			<p>users registered</p>
-		</div>
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{verified.total}}</span>
-			<p>users verified</p>
-		</div>
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{deactivated.total}}</span>
-			<p>accounts deleted</p>
-		</div>
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{shares.total}}</span>
-			<p>likes shared</p>
-		</div>
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{networksCreated.total}}</span>
-			<p>networks enabled</p>
-		</div>
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{searches.total}}</span>
-			<p>searches performed</p>
-		</div>
-
-	</div>
-	<div class="pure-g-r">
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{collectionsCreated.total}}</span>
-			<p>collections created</p>
-		</div>
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{collectionsShared.total}}</span>
-			<p>collections shared</p>
-		</div>
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{collectionsFollowed.total}}</span>
-			<p>collections followed</p>
-		</div>
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{collectionsUnfollowed.total}}</span>
-			<p>collections unfollowed</p>
-		</div>
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{collectionsItemsAdded.total}}</span>
-			<p>collections item added</p>
-		</div>
-
-		<div class="pure-u-1-6 report">
-			<span class="total">{{sends.total}}</span>
-			<p>send to friends</p>
+		<div class="pure-u-1-6 report" ng-repeat="event in events">
+			<span class="total">{{event.value.total}}</span>
+			<p>{{event.key}}</p>
 		</div>
 	</div>
 </div>

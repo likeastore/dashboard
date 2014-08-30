@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboardApp').directive('report', function (analytics) {
+angular.module('dashboardApp').directive('report', function (analytics, filterEvents) {
 	var dates = {
 		today: moment(),
 		yesterday: moment().subtract('days', 1),
@@ -16,57 +16,29 @@ angular.module('dashboardApp').directive('report', function (analytics) {
 			$scope.heading = attrs.periodHeading;
 			$scope.datePeriod = dates[attrs.date].format('DD/MM/YYYY');
 
-			analytics.report(attrs.report, dates[attrs.date], 'user-registered', function (data) {
-				$scope.registered = data;
-			});
+			function updateEvents() {
+				$scope.events = [];
+				var neededEvents = filterEvents.getEvents();
+				if(neededEvents) {
+					getData(neededEvents);
+				} else {
+					analytics.events(function(events) {
+						getData(events);
+					});
+				}
+			}
 
-			analytics.report(attrs.report, dates[attrs.date], 'user-verified', function (data) {
-				$scope.verified = data;
-			});
+			function getData(events) {
+				for(var i = 0; i < events.length; i++) {
+					var name = events[i];
+					analytics.report(attrs.report, dates[attrs.date], name, function (data) {
+						$scope.events.push({key: data.id, value: data});
+					});
+				}
+			}
 
-			analytics.report(attrs.report, dates[attrs.date], 'user-logged-on', function (data) {
-				$scope.loggedOn = data;
-			});
-
-			analytics.report(attrs.report, dates[attrs.date], 'network-created', function (data) {
-				$scope.networksCreated = data;
-			});
-
-			analytics.report(attrs.report, dates[attrs.date], 'search', function (data) {
-				$scope.searches = data;
-			});
-
-			analytics.report(attrs.report, dates[attrs.date], 'share-like', function (data) {
-				$scope.shares = data;
-			});
-
-			analytics.report(attrs.report, dates[attrs.date], 'share-with-friend', function (data) {
-				$scope.sends = data;
-			});
-
-			analytics.report(attrs.report, dates[attrs.date], 'account-deactivated', function (data) {
-				$scope.deactivated = data;
-			});
-
-			analytics.report(attrs.report, dates[attrs.date], 'collection-created', function (data) {
-				$scope.collectionsCreated = data;
-			});
-
-			analytics.report(attrs.report, dates[attrs.date], 'collection-shared', function (data) {
-				$scope.collectionsShared = data;
-			});
-
-			analytics.report(attrs.report, dates[attrs.date], 'collection-followed', function (data) {
-				$scope.collectionsFollowed = data;
-			});
-
-			analytics.report(attrs.report, dates[attrs.date], 'collection-unfollowed', function (data) {
-				$scope.collectionsUnfollowed = data;
-			});
-
-			analytics.report(attrs.report, dates[attrs.date], 'collection-item-added', function (data) {
-				$scope.collectionsItemsAdded = data;
-			});
+			updateEvents();
+			$scope.$on('eventsUpdated', updateEvents);
 		}
 	};
 });
